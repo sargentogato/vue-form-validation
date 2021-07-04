@@ -38,7 +38,6 @@ export default {
   methods: {
     validationManager() {
       if (!this.inputInfo) return (this.showAdviceMessage = true);
-      console.log("PROP:", this.cleanInputs, "/", "DATA:", this.clearInput);
       this.checkDataInput();
     },
     checkDataInput() {
