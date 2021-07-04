@@ -7,7 +7,6 @@
         :id="idInput.name"
         :placeholderInfo="placeHolderMessage.name"
         :checkInputs="checkAllInputs"
-        :cleanInputs="cleanAllInputs"
         v-on:inputPass="inputManager"
       />
       <input-base
@@ -15,7 +14,6 @@
         :id="idInput.tel"
         :placeholderInfo="placeHolderMessage.tel"
         :checkInputs="checkAllInputs"
-        :cleanInputs="cleanAllInputs"
         v-on:inputPass="inputManager"
       />
       <input-base
@@ -23,7 +21,6 @@
         :id="idInput.postalCode"
         :placeholderInfo="placeHolderMessage.postalCode"
         :checkInputs="checkAllInputs"
-        :cleanInputs="cleanAllInputs"
         v-on:inputPass="inputManager"
       />
       <button type="submit" v-on:click.prevent="sendInfo">Enviar</button>
@@ -92,7 +89,6 @@ export default {
       return formInpunts.querySelectorAll("p");
     },
     cleanInput() {
-      // this.cleanAllInputs = true;
       alert();
     },
   },

@@ -26,9 +26,6 @@ export default {
     checkInputs: {
       type: Boolean,
     },
-    cleanInputs: {
-      type: Boolean,
-    },
   },
   data() {
     return {
@@ -36,7 +33,6 @@ export default {
       showAdviceMessage: false,
       message: "Debe rellenar este campo",
       inputOk: [],
-      clearInput: this.cleanInputs,
     };
   },
   methods: {
