@@ -6,24 +6,30 @@
         :inputType="type.text"
         :id="idInput.name"
         :placeholderInfo="placeHolderMessage.name"
-        :checkInputs="checkAllInputs"
+        :clearInputs="clean"
         v-on:inputPass="inputManager"
       />
       <input-base
         :inputType="type.number"
         :id="idInput.tel"
         :placeholderInfo="placeHolderMessage.tel"
-        :checkInputs="checkAllInputs"
+        :clearInputs="clean"
         v-on:inputPass="inputManager"
       />
       <input-base
         :inputType="type.number"
         :id="idInput.postalCode"
         :placeholderInfo="placeHolderMessage.postalCode"
-        :checkInputs="checkAllInputs"
+        :clearInputs="clean"
         v-on:inputPass="inputManager"
       />
-      <button type="submit" v-on:click.prevent="sendInfo">Enviar</button>
+      <button
+        type="submit"
+        :disabled="inputOkChecker"
+        v-on:click.prevent="sendInfo"
+      >
+        Enviar
+      </button>
     </form>
   </div>
 </template>
@@ -39,8 +45,8 @@ export default {
     return {
       inputsOk: [],
       user: [],
-      checkAllInputs: false,
-      cleanAllInputs: false,
+      clean: false,
+      isDisable: true,
       type: {
         text: "text",
         number: "number",
@@ -64,13 +70,17 @@ export default {
   },
   methods: {
     sendInfo() {
-      this.checkAllInputs = true;
       this.errorManager();
     },
     inputManager(event) {
-      console.log("Evento REcibido:", event);
       this.inputsOk.push(event);
-      this.errorManager();
+      this.okChecker();
+    },
+    okChecker() {
+      const nOfInputsOk = this.inputsOk.length;
+      if (nOfInputsOk >= 3) {
+        this.isDisable = false;
+      }
     },
     errorManager() {
       const inputsPass = this.inputsOk.length;
@@ -78,7 +88,9 @@ export default {
       let errorsInput = this.checkErrors();
 
       if (!this.inputsOk.length) return;
-      if (!errorsInput.length && inputsPass === nInputs) this.cleanInput();
+      if (!errorsInput.length && inputsPass === nInputs) {
+        this.cleanInput();
+      }
     },
     nOfInputs() {
       const formElement = document.forms[0];
@@ -89,7 +101,15 @@ export default {
       return formInpunts.querySelectorAll("p");
     },
     cleanInput() {
-      alert();
+      this.inputsOk = [];
+      this.isDisable = true;
+      if (!this.clean) return (this.clean = true);
+      if (this.clean) return (this.clean = false);
+    },
+  },
+  computed: {
+    inputOkChecker() {
+      return this.isDisable ? true : false;
     },
   },
 };

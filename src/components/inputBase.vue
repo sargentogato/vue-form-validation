@@ -6,6 +6,7 @@
       :placeholder="placeholderInfo"
       v-model="inputInfo"
       class="form-control"
+      @blur="validationManager"
     />
     <p v-if="showAdviceMessage">{{ message }}</p>
   </div>
@@ -23,7 +24,7 @@ export default {
     placeholderInfo: {
       type: String,
     },
-    checkInputs: {
+    clearInputs: {
       type: Boolean,
     },
   },
@@ -50,16 +51,13 @@ export default {
         "El nombre debe tenere minímo 6 carácteres y máximo 13";
 
       const nameSize = this.inputInfo.length;
-      if (nameSize < 6 || nameSize > 13)
+      if (nameSize < 6 || nameSize > 13) {
         return this.messageCreator(nameMessage, true);
+      }
 
-      if (this.inputOk.includes("name")) return;
-
-      this.showAdviceMessage = false;
+      this.takeOffAdiviceMessage();
       if (!this.showAdviceMessage) {
-        this.inputOk.push(this.id);
-        this.okManager();
-        console.log(this.inputOk);
+        this.okManager(this.id);
       }
     },
     validateNumber() {
@@ -69,30 +67,27 @@ export default {
       if (!regex.test(this.inputInfo)) {
         return this.messageCreator(numberMessage, true);
       }
-      this.takeOffAdiviceMessage();
-      if (this.inputOk.includes("phone")) return;
 
-      // this.showAdviceMessage = false;
+      this.takeOffAdiviceMessage();
+
+      this.showAdviceMessage = false;
       if (!this.showAdviceMessage) {
-        this.inputOk.push(this.id);
-        this.okManager();
-        console.log("Validate Number:", this.inputOk);
+        this.okManager(this.id);
       }
     },
     validatePostalCode() {
       const numberMessage = "Escriba un código postal correcto";
 
       if (this.inputInfo.length < 5) {
-        return this.messageCreator(numberMessage, true);
+        this.messageCreator(numberMessage, true);
+        return;
       }
-      this.takeOffAdiviceMessage();
-      if (this.inputOk.includes("postalCode")) return;
 
-      // this.showAdviceMessage = false;
+      this.takeOffAdiviceMessage();
+
       if (!this.showAdviceMessage) {
         this.inputOk.push(this.id);
-        this.okManager();
-        console.log("Validate Number:", this.inputOk);
+        this.okManager(this.id);
       }
     },
     takeOffAdiviceMessage() {
@@ -103,17 +98,13 @@ export default {
       this.message = messageToShow;
       this.showAdviceMessage = showOrder;
     },
-    okManager() {
-      this.$emit("inputPass", this.inputOk[0]);
+    okManager(value) {
+      this.$emit("inputPass", value);
     },
   },
   watch: {
-    checkInputs() {
-      console.log("boton presionado");
-      if (this.checkInputs || !this.inputInfo) this.validationManager();
-    },
-    inputInfo() {
-      this.validationManager();
+    clearInputs() {
+      this.inputInfo = "";
     },
   },
 };
