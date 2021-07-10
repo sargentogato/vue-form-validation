@@ -8,6 +8,7 @@
         :placeholderInfo="placeHolderMessage.name"
         :clearInputs="clean"
         v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
       />
       <input-base
         :inputType="type.number"
@@ -15,6 +16,7 @@
         :placeholderInfo="placeHolderMessage.tel"
         :clearInputs="clean"
         v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
       />
       <input-base
         :inputType="type.number"
@@ -22,10 +24,27 @@
         :placeholderInfo="placeHolderMessage.postalCode"
         :clearInputs="clean"
         v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
+      />
+      <input-base
+        :inputType="type.email"
+        :id="idInput.email"
+        :placeholderInfo="placeHolderMessage.email"
+        :clearInputs="clean"
+        v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
+      />
+      <input-base
+        :inputType="type.password"
+        :id="idInput.password"
+        :placeholderInfo="placeHolderMessage.password"
+        :clearInputs="clean"
+        v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
       />
       <button
         type="submit"
-        :disabled="inputOkChecker"
+        :disabled="inputsOkChecker"
         v-on:click.prevent="sendInfo"
       >
         Enviar
@@ -44,7 +63,7 @@ export default {
   data() {
     return {
       inputsOk: [],
-      user: [],
+      user: {},
       clean: false,
       isDisable: true,
       type: {
@@ -58,6 +77,7 @@ export default {
         name: "name",
         tel: "phone",
         postalCode: "postalCode",
+        email: "email",
         password: "password",
         repeatPassword: "repeatPassword",
       },
@@ -65,6 +85,9 @@ export default {
         name: "Nombre",
         tel: "Teléfono",
         postalCode: "Código Postal",
+        email: "Correo eléctronico",
+        password: "Contraseña",
+        passwordRepeat: "Repita Contraseña",
       },
     };
   },
@@ -73,12 +96,29 @@ export default {
       this.errorManager();
     },
     inputManager(event) {
-      this.inputsOk.push(event);
+      const dataReceived = event.toLocaleString();
+
+      if (event[0] === "name" && !this.inputsOk.includes(dataReceived)) {
+        this.user["name"] = event[1];
+      }
+
+      if (!this.inputsOk.includes(dataReceived)) {
+        this.inputsOk.push(event[0]);
+      }
+
       this.okChecker();
+    },
+    setError(event) {
+      if (this.inputsOk.includes(event)) {
+        const indexToTakeOff = this.inputsOk.indexOf(event);
+        this.inputsOk.splice(indexToTakeOff, 1);
+        this.isDisable = true;
+      }
     },
     okChecker() {
       const nOfInputsOk = this.inputsOk.length;
-      if (nOfInputsOk >= 3) {
+      const nInputs = this.nOfInputs().length;
+      if (nOfInputsOk >= nInputs) {
         this.isDisable = false;
       }
     },
@@ -87,28 +127,32 @@ export default {
       const nInputs = this.nOfInputs().length;
       let errorsInput = this.checkErrors();
 
-      if (!this.inputsOk.length) return;
       if (!errorsInput.length && inputsPass === nInputs) {
         this.cleanInput();
       }
     },
     nOfInputs() {
-      const formElement = document.forms[0];
-      return formElement.querySelectorAll("input");
+      const formElements = document.forms[0];
+      return formElements.querySelectorAll("input");
     },
     checkErrors() {
       const formInpunts = document.forms[0];
       return formInpunts.querySelectorAll("p");
     },
     cleanInput() {
-      this.inputsOk = [];
-      this.isDisable = true;
+      alert(`${this.user.name} te has registrado correctamente`);
+      this.reseteValues();
       if (!this.clean) return (this.clean = true);
       if (this.clean) return (this.clean = false);
     },
+    reseteValues() {
+      this.inputsOk = [];
+      this.isDisable = true;
+      this.user = {};
+    },
   },
   computed: {
-    inputOkChecker() {
+    inputsOkChecker() {
       return this.isDisable ? true : false;
     },
   },
