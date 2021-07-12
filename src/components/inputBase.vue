@@ -27,13 +27,15 @@ export default {
     clearInputs: {
       type: Boolean,
     },
+    passwordData: {
+      type: [String, Number],
+    },
   },
   data() {
     return {
       inputInfo: null,
       showAdviceMessage: false,
       message: "Debe rellenar este campo",
-      // inputOk: [],
     };
   },
   methods: {
@@ -50,6 +52,8 @@ export default {
       if (this.id === "phone") this.validatePhoneNumber();
       if (this.id === "postalCode") this.validatePostalCode();
       if (this.id === "email") this.validateEmail();
+      if (this.id === "password") this.validatePassword();
+      if (this.id === "repeatPassword") this.passwordRepeated();
     },
     validateName() {
       const nameMessage =
@@ -64,7 +68,7 @@ export default {
       }
 
       if (!this.showAdviceMessage) {
-        this.okManager(this.id, this.inputInfo);
+        this.inputIsOk(this.id, this.inputInfo);
       }
     },
     validatePhoneNumber() {
@@ -81,7 +85,7 @@ export default {
       }
 
       if (!this.showAdviceMessage) {
-        this.okManager(this.id);
+        this.inputIsOk(this.id);
       }
     },
     validatePostalCode() {
@@ -98,7 +102,7 @@ export default {
       }
 
       if (!this.showAdviceMessage && this.inputInfo >= 5) {
-        this.okManager(this.id);
+        this.inputIsOk(this.id);
       }
     },
     validateEmail() {
@@ -115,7 +119,41 @@ export default {
       }
 
       if (!this.showAdviceMessage) {
-        this.okManager(this.id, this.inputInfo);
+        this.inputIsOk(this.id, this.inputInfo);
+      }
+    },
+    validatePassword() {
+      const nameMessage =
+        "Requerido mínimo de 6 y máximo de 13 dígitos que contenga mayúsculas, minúsculas y números";
+      const regPassword =
+        /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+      const isPasswordOk = regPassword.test(this.inputInfo);
+
+      const nameSize = this.inputInfo.length;
+      if (nameSize < 6 || nameSize > 13 || !isPasswordOk) {
+        this.messageCreator(nameMessage, true);
+        this.setErrorInput(this.id);
+      } else {
+        this.takeOffAdviceMessage();
+      }
+
+      if (!this.showAdviceMessage) {
+        this.inputIsOk(this.id, this.inputInfo);
+      }
+    },
+    passwordRepeated() {
+      const passMessage = "La constraseña no coincide";
+
+      console.log("verificando si hay pass:", this.passwordData);
+
+      if (this.inputInfo !== this.passwordData) {
+        this.messageCreator(passMessage, true);
+      } else {
+        this.takeOffAdviceMessage();
+      }
+
+      if (!this.showAdviceMessage) {
+        this.inputIsOk(this.id);
       }
     },
     areThereAnyNumber(...value) {
@@ -135,12 +173,10 @@ export default {
       this.message = messageToShow;
       this.showAdviceMessage = showOrder;
     },
-    okManager(...value) {
-      // console.log("OK okManager", value);
+    inputIsOk(...value) {
       this.$emit("inputPass", value);
     },
     setErrorInput(idInput) {
-      console.log("Evento");
       this.$emit("setErrorInput", idInput);
     },
   },
