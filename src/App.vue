@@ -1,69 +1,75 @@
 <template>
-  <div id="app">
-    <h1>Title</h1>
-    <form action="">
-      <input-base
-        :inputType="type.text"
-        :id="idInput.name"
-        :placeholderInfo="placeHolderMessage.name"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <input-base
-        :inputType="type.number"
-        :id="idInput.tel"
-        :placeholderInfo="placeHolderMessage.tel"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <input-base
-        :inputType="type.number"
-        :id="idInput.postalCode"
-        :placeholderInfo="placeHolderMessage.postalCode"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <input-base
-        :inputType="type.email"
-        :id="idInput.email"
-        :placeholderInfo="placeHolderMessage.email"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <input-base
-        :inputType="type.password"
-        :id="idInput.password.pass"
-        :placeholderInfo="placeHolderMessage.password.pass"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <input-base
-        :inputType="type.password"
-        :id="idInput.password.repeatPassword"
-        :placeholderInfo="placeHolderMessage.password.repeatPassword"
-        :clearInputs="clean"
-        :passwordData="password"
-        v-on:inputPass="inputManager"
-        v-on:setErrorInput="setError"
-      />
-      <button
-        type="submit"
-        :disabled="inputsOkChecker"
-        v-on:click.prevent="sendInfo"
-      >
-        Enviar
-      </button>
-    </form>
+  <div id="app" class="container">
+    <div class="title d-flex justify-content-center">
+      <h1 class="mt-3 mb-0 text-center text-light">{{ title }}</h1>
+    </div>
+
+    <div class="inputs d-flex justify-content-center">
+      <form action="" class="d-flex flex-column">
+        <input-base
+          :inputType="type.text"
+          :id="idInput.name"
+          :placeholderInfo="placeHolderMessage.name"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <input-base
+          :inputType="type.number"
+          :id="idInput.tel"
+          :placeholderInfo="placeHolderMessage.tel"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <input-base
+          :inputType="type.number"
+          :id="idInput.postalCode"
+          :placeholderInfo="placeHolderMessage.postalCode"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <input-base
+          :inputType="type.email"
+          :id="idInput.email"
+          :placeholderInfo="placeHolderMessage.email"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <input-base
+          :inputType="type.password"
+          :id="idInput.password.pass"
+          :placeholderInfo="placeHolderMessage.password.pass"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <input-base
+          :inputType="type.password"
+          :id="idInput.password.repeatPassword"
+          :placeholderInfo="placeHolderMessage.password.repeatPassword"
+          :clearInputs="clean"
+          :passwordData="password"
+          v-on:inputPass="inputManager"
+          v-on:setErrorInput="setError"
+        />
+        <button
+          class="btn btn-primary"
+          type="submit"
+          :disabled="inputsOkChecker"
+          v-on:click.prevent="sendInfo"
+        >
+          Enviar
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -77,6 +83,7 @@ export default {
   },
   data() {
     return {
+      title: "IT ACADEMY FORM",
       inputsOk: [],
       user: {},
       clean: false,
@@ -183,4 +190,22 @@ export default {
 </script>
 
 NameInput
-<style></style>
+<style scoped>
+.container {
+  height: 100vh;
+}
+
+.title {
+  height: 20%;
+}
+
+.inputs {
+  height: 80%;
+}
+
+form {
+  flex-basis: 30%;
+  gap: 0.8em;
+  margin-block-start: 2em;
+}
+</style>

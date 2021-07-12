@@ -5,7 +5,6 @@
       :type="inputType"
       :placeholder="placeholderInfo"
       v-model="inputInfo"
-      class="form-control"
       @blur="validationManager"
     />
     <p v-if="showAdviceMessage">{{ message }}</p>
@@ -186,4 +185,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+input {
+  border-radius: 5px;
+  height: 2.5rem;
+  width: 100%;
+  padding-left: 0.5em;
+}
+
+p {
+  margin-block-start: 0.2em;
+  margin-bottom: -5em;
+  text-align: center;
+  font-size: 0.8em;
+  margin-block-end: 5px;
+  color: white;
+}
+</style>
