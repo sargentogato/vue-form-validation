@@ -144,8 +144,6 @@ export default {
     passwordRepeated() {
       const passMessage = "La constraseña no coincide";
 
-      console.log("verificando si hay pass:", this.passwordData);
-
       if (this.inputInfo !== this.passwordData) {
         this.messageCreator(passMessage, true);
       } else {

@@ -69,7 +69,6 @@
 
 <script>
 import inputBase from "./components/inputBase.vue";
-// import Password from "./components/password.vue";
 
 export default {
   name: "App",

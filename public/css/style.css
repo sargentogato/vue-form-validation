@@ -1,0 +1,28 @@
+:root {
+  --image-background: url(https://cdn.freecodecamp.org/testable-projects-fcc/images/survey-form-background.jpeg);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: darkblue;
+  background-image: linear-gradient(
+      100deg,
+      rgba(58, 58, 158, 0.5),
+      rgba(136, 136, 206, 0.7)
+    ),
+    var(--image-background);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
