@@ -7,6 +7,7 @@
         :id="idInput.name"
         :placeholderInfo="placeHolderMessage.name"
         :clearInputs="clean"
+        :passwordData="password"
         v-on:inputPass="inputManager"
         v-on:setErrorInput="setError"
       />
@@ -15,6 +16,7 @@
         :id="idInput.tel"
         :placeholderInfo="placeHolderMessage.tel"
         :clearInputs="clean"
+        :passwordData="password"
         v-on:inputPass="inputManager"
         v-on:setErrorInput="setError"
       />
@@ -23,6 +25,7 @@
         :id="idInput.postalCode"
         :placeholderInfo="placeHolderMessage.postalCode"
         :clearInputs="clean"
+        :passwordData="password"
         v-on:inputPass="inputManager"
         v-on:setErrorInput="setError"
       />
@@ -31,14 +34,25 @@
         :id="idInput.email"
         :placeholderInfo="placeHolderMessage.email"
         :clearInputs="clean"
+        :passwordData="password"
         v-on:inputPass="inputManager"
         v-on:setErrorInput="setError"
       />
       <input-base
         :inputType="type.password"
-        :id="idInput.password"
-        :placeholderInfo="placeHolderMessage.password"
+        :id="idInput.password.pass"
+        :placeholderInfo="placeHolderMessage.password.pass"
         :clearInputs="clean"
+        :passwordData="password"
+        v-on:inputPass="inputManager"
+        v-on:setErrorInput="setError"
+      />
+      <input-base
+        :inputType="type.password"
+        :id="idInput.password.repeatPassword"
+        :placeholderInfo="placeHolderMessage.password.repeatPassword"
+        :clearInputs="clean"
+        :passwordData="password"
         v-on:inputPass="inputManager"
         v-on:setErrorInput="setError"
       />
@@ -55,6 +69,8 @@
 
 <script>
 import inputBase from "./components/inputBase.vue";
+// import Password from "./components/password.vue";
+
 export default {
   name: "App",
   components: {
@@ -66,6 +82,7 @@ export default {
       user: {},
       clean: false,
       isDisable: true,
+      password: "",
       type: {
         text: "text",
         number: "number",
@@ -78,16 +95,20 @@ export default {
         tel: "phone",
         postalCode: "postalCode",
         email: "email",
-        password: "password",
-        repeatPassword: "repeatPassword",
+        password: {
+          pass: "password",
+          repeatPassword: "repeatPassword",
+        },
       },
       placeHolderMessage: {
         name: "Nombre",
         tel: "Teléfono",
         postalCode: "Código Postal",
         email: "Correo eléctronico",
-        password: "Contraseña",
-        passwordRepeat: "Repita Contraseña",
+        password: {
+          pass: "Contraseña",
+          repeatPassword: "Repita Contraseña",
+        },
       },
     };
   },
@@ -96,13 +117,15 @@ export default {
       this.errorManager();
     },
     inputManager(event) {
-      const dataReceived = event.toLocaleString();
-
-      if (event[0] === "name" && !this.inputsOk.includes(dataReceived)) {
+      if (event[0] === "name" && !this.inputsOk.includes(event[0])) {
         this.user["name"] = event[1];
       }
 
-      if (!this.inputsOk.includes(dataReceived)) {
+      if (event[0] === "password") {
+        this.password = event[1];
+      }
+
+      if (!this.inputsOk.includes(event[0])) {
         this.inputsOk.push(event[0]);
       }
 
@@ -118,7 +141,8 @@ export default {
     okChecker() {
       const nOfInputsOk = this.inputsOk.length;
       const nInputs = this.nOfInputs().length;
-      if (nOfInputsOk >= nInputs) {
+
+      if (nOfInputsOk === nInputs) {
         this.isDisable = false;
       }
     },
