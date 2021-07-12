@@ -1,4 +1,4 @@
-# form-final
+# Form Validation Vue
 
 ## Project setup
 ```
